@@ -16,14 +16,13 @@ Pod::Spec.new do |s|
   DLNA投屏,支持各大主流盒子互联网电视.
                        DESC
 
-  s.homepage         = 'https://github.com/MQL9011/MRDLNA'
+  s.homepage         = 'https://github.com/Meonardo/MRDLNA'
   
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'MQL9011' => '301063915@qq.com' }
-  s.source           = { :git => 'https://github.com/MQL9011/MRDLNA.git', :tag => s.version.to_s }
-  s.social_media_url = 'http://cocomccree.cn/'
+  s.source           = { :git => 'https://github.com/Meonardo/MRDLNA.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'MRDLNA/Classes/ARC/**/*'
   
