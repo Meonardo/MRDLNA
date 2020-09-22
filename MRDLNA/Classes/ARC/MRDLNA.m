@@ -68,12 +68,13 @@
 -(void)initCLUPnPRendererAndDlnaPlay{
     self.render = [[CLUPnPRenderer alloc] initWithModel:self.device];
     self.render.delegate = self;
-    [self.render setAVTransportURL:self.playUrl];
+    [self.render setAVTransportURL:self.playUrl fileName:self.playingFileName];
 }
 /**
  退出DLNA
  */
 - (void)endDLNA{
+	self.playingFileName = nil;
     [self.render stop];
 }
 
@@ -173,6 +174,41 @@
     if ([self.delegate respondsToSelector:@selector(dlnaStartPlay)]) {
         [self.delegate dlnaStartPlay];
     }
+}
+
+// 暂停响应
+- (void)upnpPauseResponse {
+	if ([self.delegate respondsToSelector:@selector(dlnaPaused)]) {
+		[self.delegate dlnaPaused];
+	}
+}
+
+// 停止投屏
+- (void)upnpStopResponse {
+	if ([self.delegate respondsToSelector:@selector(dlnaStopped)]) {
+		[self.delegate dlnaStopped];
+	}
+}
+
+// 跳转响应
+- (void)upnpSeekResponse {
+	if ([self.delegate respondsToSelector:@selector(dlnaDidSeeking)]) {
+		[self.delegate dlnaDidSeeking];
+	}
+}
+
+/// 下一个响应
+- (void)upnpNextResponse {
+	if ([self.delegate respondsToSelector:@selector(dlnaDidPlayNext)]) {
+		[self.delegate dlnaDidPlayNext];
+	}
+}
+
+// 获取播放进度
+- (void)upnpGetPositionInfoResponse:(CLUPnPAVPositionInfo *)info {
+	if ([self.delegate respondsToSelector:@selector(dlnaPositionChanged:duration:)]) {
+		[self.delegate dlnaPositionChanged:(double)info.trackDuration duration:(double)info.absTime];
+	}
 }
 
 #pragma mark Set&Get

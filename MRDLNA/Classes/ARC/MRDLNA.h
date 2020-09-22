@@ -17,12 +17,25 @@
  @param devicesArray <CLUPnPDevice *> 搜索到的设备
  */
 - (void)searchDLNAResult:(NSArray *)devicesArray;
-
-
 /**
  投屏成功开始播放
  */
 - (void)dlnaStartPlay;
+
+// 暂停响应
+- (void)dlnaPaused;
+
+// 停止投屏
+- (void)dlnaStopped;
+
+// 跳转响应
+- (void)dlnaDidSeeking;
+
+/// 下一个响应
+- (void)dlnaDidPlayNext;
+
+// 获取播放进度
+- (void)dlnaPositionChanged:(NSTimeInterval)current duration:(NSTimeInterval)duration;
 
 @end
 
@@ -35,6 +48,8 @@
 @property(nonatomic,copy) NSString *playUrl;
 
 @property(nonatomic,assign) NSInteger searchTime;
+
+@property(nonatomic, strong) NSString *playingFileName;
 
 /**
  单例

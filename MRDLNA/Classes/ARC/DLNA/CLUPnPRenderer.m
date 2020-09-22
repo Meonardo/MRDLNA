@@ -10,7 +10,7 @@
 #import "GDataXMLNode.h"
 #import "CLUPnPAction.h"
 
-#define VideoDIDL @"<DIDL-Lite xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:sec=\"http://www.sec.co.kr/\" xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\"><item id=\"f-0\" parentID=\"0\" restricted=\"0\"><dc:title>Video</dc:title><dc:creator>Anonymous</dc:creator><upnp:class>object.item.videoItem</upnp:class><res protocolInfo=\"http-get:*:video/*:DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000\" sec:URIType=\"public\">%@</res></item></DIDL-Lite>"
+#define VideoDIDL @"<DIDL-Lite xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:sec=\"http://www.sec.co.kr/\" xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\"><item id=\"f-0\" parentID=\"0\" restricted=\"0\"><dc:title></dc:title><dc:creator>Anonymous</dc:creator><upnp:class>object.item.videoItem</upnp:class><res protocolInfo=\"http-get:*:video/*:DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000\" sec:URIType=\"public\">%@</res></item></DIDL-Lite>"
 
 @implementation CLUPnPRenderer
 
@@ -28,12 +28,22 @@
 
 #pragma mark -
 #pragma mark -- AVTransport动作 --
+
 - (void)setAVTransportURL:(NSString *)urlStr{
-    CLUPnPAction *action = [[CLUPnPAction alloc] initWithAction:@"SetAVTransportURI"];
-    [action setArgumentValue:@"0" forName:@"InstanceID"];
-    [action setArgumentValue:urlStr forName:@"CurrentURI"];
-    [action setArgumentValue:VideoDIDL forName:@"CurrentURIMetaData"];
-    [self postRequestWith:action];
+	[self setAVTransportURL:urlStr fileName:nil];
+}
+
+- (void)setAVTransportURL:(NSString *)urlStr fileName:(NSString *)fileName {
+	CLUPnPAction *action = [[CLUPnPAction alloc] initWithAction:@"SetAVTransportURI"];
+	[action setArgumentValue:@"0" forName:@"InstanceID"];
+	[action setArgumentValue:urlStr forName:@"CurrentURI"];
+	if (fileName) {
+		NSString *content = [NSString stringWithFormat:@"<DIDL-Lite xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:sec=\"http://www.sec.co.kr/\" xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\"><item id=\"f-0\" parentID=\"0\" restricted=\"0\"><dc:title>Video</dc:title><dc:creator>Anonymous</dc:creator><upnp:class>object.item.videoItem</upnp:class><res protocolInfo=\"http-get:*:video/*:DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000\" sec:URIType=\"public\">%@</res></item></DIDL-Lite>", fileName, @""];
+		[action setArgumentValue:content forName:@"CurrentURIMetaData"];
+	} else {
+		[action setArgumentValue:VideoDIDL forName:@"CurrentURIMetaData"];
+	}
+	[self postRequestWith:action];
 }
 
 - (void)setNextAVTransportURI:(NSString *)urlStr{

@@ -24,6 +24,11 @@
  */
 - (instancetype)initWithModel:(CLUPnPDevice *)model;
 
+/// 设置投屏地址
+/// @param urlStr 视频url
+/// @param fileName 文件名称
+- (void)setAVTransportURL:(NSString *)urlStr fileName:(NSString *)fileName;
+
 /**
  设置投屏地址
  @param urlStr 视频url
