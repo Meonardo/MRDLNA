@@ -74,7 +74,7 @@
  退出DLNA
  */
 - (void)endDLNA{
-	self.playingFileName = nil;
+    self.playingFileName = nil;
     [self.render stop];
 }
 
@@ -164,10 +164,16 @@
 }
 
 - (void)upnpGetTransportInfoResponse:(CLUPnPTransportInfo *)info{
-//    NSLog(@"%@ === %@", info.currentTransportState, info.currentTransportStatus);
-    if (!([info.currentTransportState isEqualToString:@"PLAYING"] || [info.currentTransportState isEqualToString:@"TRANSITIONING"])) {
-        [self.render play];
+    if ([info.currentTransportStatus isEqualToString:@"OK"]) {
+        if ([info.currentTransportState isEqualToString:@"STOPPED"]) {
+            [self upnpStopResponse];
+        } else if ([info.currentTransportState isEqualToString:@"PAUSED_PLAYBACK"]) {
+            [self upnpPauseResponse];
+        } else if ([info.currentTransportState isEqualToString:@"PLAYING"]) {
+            [self upnpPlayResponse];
+        }
     }
+    NSLog(@"DLNA播放状态: %@", info.currentTransportState);
 }
 
 - (void)upnpPlayResponse{
@@ -176,39 +182,39 @@
     }
 }
 
-// 暂停响应
 - (void)upnpPauseResponse {
-	if ([self.delegate respondsToSelector:@selector(dlnaPaused)]) {
-		[self.delegate dlnaPaused];
-	}
+    if ([self.delegate respondsToSelector:@selector(dlnaPaused)]) {
+        [self.delegate dlnaPaused];
+    }
 }
 
-// 停止投屏
 - (void)upnpStopResponse {
-	if ([self.delegate respondsToSelector:@selector(dlnaStopped)]) {
-		[self.delegate dlnaStopped];
-	}
+    if ([self.delegate respondsToSelector:@selector(dlnaStopped)]) {
+        [self.delegate dlnaStopped];
+    }
 }
 
-// 跳转响应
 - (void)upnpSeekResponse {
-	if ([self.delegate respondsToSelector:@selector(dlnaDidSeeking)]) {
-		[self.delegate dlnaDidSeeking];
-	}
+    if ([self.delegate respondsToSelector:@selector(dlnaDidSeeking)]) {
+        [self.delegate dlnaDidSeeking];
+    }
 }
 
-/// 下一个响应
 - (void)upnpNextResponse {
-	if ([self.delegate respondsToSelector:@selector(dlnaDidPlayNext)]) {
-		[self.delegate dlnaDidPlayNext];
-	}
+    if ([self.delegate respondsToSelector:@selector(dlnaDidPlayNext)]) {
+        [self.delegate dlnaDidPlayNext];
+    }
 }
 
-// 获取播放进度
 - (void)upnpGetPositionInfoResponse:(CLUPnPAVPositionInfo *)info {
-	if ([self.delegate respondsToSelector:@selector(dlnaPositionChanged:duration:)]) {
-		[self.delegate dlnaPositionChanged:(double)info.trackDuration duration:(double)info.absTime];
-	}
+    if ([self.delegate respondsToSelector:@selector(dlnaPositionChanged:duration:)]) {
+        [self.delegate dlnaPositionChanged:(double)info.absTime duration:(double)info.trackDuration];
+    }
+}
+
+- (void)fetchPlayingPositionInfo {
+    [self.render getPositionInfo];
+    [self.render getTransportInfo];
 }
 
 #pragma mark Set&Get

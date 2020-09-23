@@ -23,6 +23,9 @@
 - (void)dlnaStartPlay;
 
 // 暂停响应
+- (void)dlnaPlaying;
+
+// 暂停响应
 - (void)dlnaPaused;
 
 // 停止投屏
@@ -100,4 +103,8 @@
  播放切集
  */
 - (void)playTheURL:(NSString *)url;
+
+/// 获取播放进度, 回调在`dlnaPositionChanged:duration:`
+- (void)fetchPlayingPositionInfo;
+
 @end
