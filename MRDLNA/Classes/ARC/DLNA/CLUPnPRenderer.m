@@ -286,8 +286,10 @@
 }
 
 - (void)_UndefinedResponse:(NSString *)xmlStr postXML:(NSString *)postXML{
+#if DEBUG
     NSLog(@"===========发送信息:%@ \n",postXML);
     NSLog(@"===========响应信息:%@ \n",xmlStr);
+#endif
     if ([self.delegate respondsToSelector:@selector(upnpUndefinedResponse:postXML:)]) {
         [self.delegate upnpUndefinedResponse:xmlStr postXML:postXML];
     }

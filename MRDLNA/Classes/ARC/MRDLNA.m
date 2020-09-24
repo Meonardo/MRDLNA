@@ -173,7 +173,9 @@
             [self upnpPlayResponse];
         }
     }
+#if DEBUG
     NSLog(@"DLNA播放状态: %@", info.currentTransportState);
+#endif
 }
 
 - (void)upnpPlayResponse{
