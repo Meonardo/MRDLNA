@@ -1,4 +1,8 @@
 
+# FORK From MRDLNA
+**增加播放状态和进度的回调**
+轮训`fetchPlayingPositionInfo` 方法即可.
+
 # MRDLNA
 ![](https://img.shields.io/badge/project-iOS-blue.svg)
 ![](https://img.shields.io/badge/install-CocoaPods-orange.svg)
