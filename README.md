@@ -1,7 +1,7 @@
 
-# FORK From MRDLNA
+# FORKED From MRDLNA
 **增加播放状态和进度的回调**
-轮训`fetchPlayingPositionInfo` 方法即可.
+- 轮训`fetchPlayingPositionInfo` 方法即可.
 
 # MRDLNA
 ![](https://img.shields.io/badge/project-iOS-blue.svg)
@@ -15,7 +15,7 @@
 # Usage
 
 ```
-pod 'MRDLNA'
+pod 'MRDLNA', :git => 'https://github.com/Meonardo/MRDLNA.git'
 ```
 
 
